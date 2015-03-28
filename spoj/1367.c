@@ -16,7 +16,7 @@ int main(){
 		/*le n entradas */
 		for(i = 0; i < n; i++){
 			
-			/*leitura da disposicao dos digitos*/
+			/*leitura do layout do caixa*/
 			for(j = 0; j < 5; j++){
 				scanf("%d %d",&pos[0][j],&pos[1][j]);			
 			}
@@ -32,17 +32,20 @@ int main(){
 					a = pos[0][letra];
 					b = pos[1][letra];
 
-					if(a == senha[0][k] || (b == senha[0][k] && a != senha[1][k])){
-						senha[1][k] = -1;
-					} else if (b == senha[1][k] || (a == senha[1][k] && b != senha[0][k])){
-						senha[0][k] = -1;
-					}
+					if(a != senha[0][k] && a != senha[1][k])
+						a = -1;
+					else if(b != senha[0][k] && b != senha[1][k])
+						b = -1;
 
+					senha[0][k] = a;
+					senha[1][k] = b; 
+
+				/*na primeira vez eu só guardo*/
 				} else {
-					/*ordena a possivel senha*/
-					senha[0][k] = pos[0][letra];
-					senha[1][k] = pos[1][letra]; 
-				}				
+
+				senha[0][k] = pos[0][letra];
+				senha[1][k] = pos[1][letra]; 
+				}
 			}	
 		}
 		cont++;
