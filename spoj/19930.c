@@ -2,29 +2,23 @@
 
 int main(){
 	
-	int n, lista[100001], i,j, alunos = 0;
+	int n, lista[100000], i,aux, alunos = 0;
 
 	scanf("%d",&n);
 
-	/*guardo a chamada*/
+	/*zero um vetor*/
 	for(i = 0; i < n; i++){
-		scanf("%d",&lista[i]);
+		lista[i] = 0;
 	}
 
-	/*pego cada cara e comparo com todos os PROXIMOS*/
+	/*vejo se ja tem alguem*/
 	for(i = 0; i < n; i++){
-
-
-		if(lista[i] >= 0){
-
-			for(j = i+1; j < n; j++){
-				/*descarto os repetidos*/
-				if(lista[i] == lista[j])
-					lista[j] = -1;
-			}
-
+		scanf("%d",&aux);
+		
+		if(lista[aux] == 0){
+			lista[aux] += 1;
 			alunos++;
-		}
+		}		
 	}
 	printf("%d\n",alunos);
 
