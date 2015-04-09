@@ -2,12 +2,12 @@
 
 int main(){
 	
-	int n, lista[100000], i,aux, alunos = 0;
+	int n, lista[1000001], i,aux, alunos = 0;
 
 	scanf("%d",&n);
 
 	/*zero um vetor*/
-	for(i = 0; i < n; i++){
+	for(i = 0; i < 1000001; i++){
 		lista[i] = 0;
 	}
 
