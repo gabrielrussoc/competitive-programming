@@ -17,7 +17,7 @@ int main(){
 				printf("%d",((tel[i] - 'A') /  3) + 2);
 
 			/*letra S especial, porque tambem fica no 7*/
-			else if( ((tel[i] - 'A') /  3) == 18)
+			else if( (tel[i] - 'A') == 18)
 				printf("7");
 
 			/*digitos até Y (numeros 8 e 9)*/
