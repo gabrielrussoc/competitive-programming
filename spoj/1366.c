@@ -17,16 +17,16 @@ int main(){
 
 		while(ok){
 			scanf("%d %d",&x,&y);
-			horizontal += x;
-			vertical += -y;
+			horizontal += -x;
+			vertical += y;
 			if(x == 0 && y == 0)
 				ok = 0;
 		}
 
 		if(horizontal < 0)
-			horizontal = m + horizontal;
+			horizontal = n + horizontal;
 		if(vertical < 0)
-			vertical = n + vertical;
+			vertical = m + vertical;
 
 		printf("Teste %d\n",teste);
 
