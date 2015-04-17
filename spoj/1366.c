@@ -23,10 +23,16 @@ int main(){
 				ok = 0;
 		}
 
-		if(horizontal < 0)
+		if(horizontal < 0){
+			if(-horizontal > n)
+				horizontal = -horizontal;
 			horizontal = n + horizontal;
-		if(vertical < 0)
+		}	
+		if(vertical < 0){
+			if(-vertical > n)
+				vertical = -vertical;
 			vertical = m + vertical;
+		}
 
 		printf("Teste %d\n",teste);
 
@@ -36,8 +42,6 @@ int main(){
 			}
 			printf("\n");
 		}
-		printf("\n");
-
 
 		teste++;
 
