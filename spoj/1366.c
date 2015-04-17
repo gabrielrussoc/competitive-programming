@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(){
 	
@@ -24,14 +25,10 @@ int main(){
 		}
 
 		if(horizontal < 0){
-			if(-horizontal > n)
-				horizontal = -horizontal;
-			horizontal = n + horizontal;
+			horizontal = abs(n + horizontal)%n;	
 		}	
 		if(vertical < 0){
-			if(-vertical > n)
-				vertical = -vertical;
-			vertical = m + vertical;
+			vertical = abs(m + vertical)%m;
 		}
 
 		printf("Teste %d\n",teste);
@@ -42,6 +39,7 @@ int main(){
 			}
 			printf("\n");
 		}
+		printf("\n");
 
 		teste++;
 
