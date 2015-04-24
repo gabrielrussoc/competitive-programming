@@ -18,24 +18,18 @@ int main(){
 
 		while(ok){
 			scanf("%d %d",&x,&y);
-			horizontal += -x;
-			vertical += y;
+			horizontal += x;
+			vertical += -y;
 			if(x == 0 && y == 0)
 				ok = 0;
 		}
-
-		if(horizontal < 0){
-			horizontal = abs(n + horizontal)%n;	
-		}	
-		if(vertical < 0){
-			vertical = abs(m + vertical)%m;
-		}
+	
 
 		printf("Teste %d\n",teste);
 
 		for(i = 0; i < m; i++){
 			for(j = 0; j < n; j++){
-				printf("%d ",matriz[(i+vertical)%m][(j+horizontal)%n]);
+				printf("%d ",matriz[(m + (i-vertical)%m)%m][(n + (j-horizontal)%n)%n]);
 			}
 			printf("\n");
 		}
