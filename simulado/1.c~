@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define MAX 10000
+
+
+int main(){
+
+	char dig[10004];
+	int penultimo, ultimo;	
+	
+	while(scanf(" %s",dig) != EOF){
+		
+	}	
+
+	return 0;
+}

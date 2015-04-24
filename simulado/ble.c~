@@ -1,0 +1,9 @@
+#include<stdio.h>
+int main(){
+	long i, m = 1;
+
+	for(i = 0; i < 1000; i++)
+		printf("%d", 11*i);
+
+	return 0;
+}
