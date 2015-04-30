@@ -7,12 +7,10 @@ int buscab(int ini, int fim, long long p){
 
 	int mid = (ini+fim)/2;
 
-	if(ini > fim) return -1;
-	else if(v[mid] > p) return buscab(ini,mid-1,p);
-	else if(v[mid] < p) return buscab(mid+1,fim,p);
-	else return mid;
-
-
+	if(ini == fim) return ini;
+	else if(v[mid] >= p) return buscab(ini,mid,p);
+	else return buscab(mid+1,fim,p);
+	
 }
 
 int main(){
@@ -29,8 +27,8 @@ int main(){
 	for(i = 0; i < q; i++){
 		scanf("%lld",&num);
 		res = buscab(0,n-1,num);
-		while(v[res] == v[res-1])
-			res--;
+		if (v[res] != num)
+			res = -1;
 		printf("%d\n",res);
 	}
 	
