@@ -12,7 +12,7 @@ int main(){
 
 	for(i = 0; i < t; i++){
 		scanf("%d %d",&x,&y);
-		raio = 
+		raio
 		
 	
 	return 0;
