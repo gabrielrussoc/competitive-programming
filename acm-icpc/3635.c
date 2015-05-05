@@ -5,35 +5,41 @@
 
 int main(){
 
-	int n, f, i, temp;
-	double v[MAX], lo = 0, mid, hi = 0;
+	int n, f, i, temp, c;
+	double v[MAX], lo, mid, hi;
 	double pi = acos(-1);
 
-	scanf("%d %d",&n,&f);
+	scanf("%d",&c);
 
-	for(i = 0; i < n; i++){
-		scanf("%lf",&v[i]);
-		v[i] = v[i]*v[i]*pi;
-		if(v[i] > hi)
-			hi = v[i];
-	}
+	while(c){
+		lo = hi = 0;
+		scanf("%d %d",&n,&f);
 
-	while(hi - lo > 0.001){
-		mid = (lo+hi)/2.0;
-
-		temp = 0;
 		for(i = 0; i < n; i++){
-			temp += v[i]/mid;
+			scanf("%lf",&v[i]);
+			v[i] = v[i]*v[i]*pi;
+			if(v[i] > hi)
+				hi = v[i];
 		}
 
-		if(temp >= f)
-			lo = mid;
-		else
-			hi = mid - 0.001;
+		while(hi - lo > 0.00001){
+			mid = (lo+hi)/2.0;
 
+			temp = 0;
+			for(i = 0; i < n; i++){
+				temp += v[i]/mid;
+			}
+
+			if(temp >= f+1)
+				lo = mid;
+			else
+				hi = mid - 0.00001;
+
+		}
+
+		printf("%.4lf\n",lo);
+		c--;
 	}
-
-	printf("%.4lf\n",lo);
 
 
 	return 0;
