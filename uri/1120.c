@@ -1,19 +1,28 @@
 #include <stdio.h>
+#include <string.h>
 
 int main(){
 
-	char dig;
-	double contrato[1e100];
+	char dig,contrato[101];
+	int foi,i;
 
-	while(scanf("%c",&dig) && dig != '0'){
+	while(scanf(" %c",&dig) && dig != '0'){
 
-		printf("OI\n");
+		foi = 0;
+		scanf("%s",contrato);
+		for(i = 0; contrato[i] != '\0'; i++){
+			if(dig != contrato[i]){
+				if(contrato[i] == '0' && !foi)
+					continue;
+				else{
+					printf("%c",contrato[i]);
+					foi = 1;
+				}
 
-		while(scanf(" %s",&contrato) != '\0'){
-			if(contrato != dig){
-				printf("%c",contrato);
 			}
 		}
+		if(!foi)
+			printf("0");
 		printf("\n");
 
 	}
