@@ -36,9 +36,10 @@ int main(){
 			plaincode[(k * i) % n] = mod28(ciphercode[i] + i);
 
 		for(i = 0; i < n; i++){
+			printf("%d ",plaincode[i]);
 			if(plaincode[i] == 27)
 				plaintext[i] = '.';
-			else if(ciphercode[i] == 0)
+			else if(plaincode[i] == 0)
 				plaintext[i] = '_';
 			else
 				plaintext[i] = plaincode[i] + 'a' - 1;
