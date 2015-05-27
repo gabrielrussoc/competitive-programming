@@ -6,36 +6,33 @@ using namespace std;
 
 int main(){
 
-	int ans_a, ans_b, n, b[MAX],lo,up,d;
+	int ans_a, ans_b, n, b[MAX],lo,up,m;
 
 	while(scanf("%d",&n) != EOF){
 		
 		for(int i = 0; i < n; i++)
 			scanf("%d",&b[i]);
-		scanf("%d",&d);
+		scanf("%d",&m);
 
 		sort(b,b+n);
 
 		lo = 0;
 		up = n-1;
-		int dif = 1000004;
 
 		while(up > lo){
-			if(b[up] + b[lo] == d){
-				if(b[up] - b[lo] < dif){
-					ans_b = b[up];
-					ans_a = b[lo];
-				}
+			if(b[up] + b[lo] == m){
+				ans_b = b[up];
+				ans_a = b[lo];
 				up--;
 				lo++;
 			}
 
-			else if(b[up] + b[lo] < d) lo++;
+			else if(b[up] + b[lo] < m) lo++;
 			else up--;
 		}
 
 
-		printf("Peter should buy books whose prices are %d and %d.\n",ans_a,ans_b);
+		printf("Peter should buy books whose prices are %d and %d.\n\n",ans_a,ans_b);
 	}
 
 	
