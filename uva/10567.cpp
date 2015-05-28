@@ -22,11 +22,33 @@ bool comp(guy i, guy j) {
 		return false;
 }
 
+int bb1(int lo, int hi, char c){
+	int mid = (hi + lo)/2;
+
+	if(lo > hi)
+		return -1;
+
+	if(hi == lo){
+		if(p[hi].st == c)
+			return hi;
+		else
+			return -1;
+	}
+
+	if(p[mid].st >= c)
+		return bb1(lo,mid,c);
+	else
+		return bb1(mid+1,hi,c);
+}
+
 int bb(int lo, int hi, char c, int l){
 	int mid = (hi + lo)/2;
 
+	if(lo > hi)
+		return -1;
+
 	if(hi == lo){
-		if(p[hi].id > l)
+		if(p[hi].id > p[l].id && p[hi].st == c)
 			return hi;
 		else
 			return -1;
@@ -35,15 +57,13 @@ int bb(int lo, int hi, char c, int l){
 	if(p[mid].st > c)
 		return bb(lo,mid-1,c,l);
 	else if(p[mid].st < c)
-		return bb(mid,hi,c,l);
+		return bb(mid+1,hi,c,l);
 	else{
-		if(p[mid].id < l)
+		if(p[mid].id <= p[l].id)
 			return bb(mid+1,hi,c,l);
 		else
 			return bb(lo,mid,c,l);
 	}
-
-
 }
 
 int main(){
@@ -58,7 +78,7 @@ int main(){
 		p[i].st = input[i];
 	}
 
-	sort(p,p+t,comp);
+	sort(p,p+t,comp);	
 
 	int q;
 	scanf("%d",&q);
@@ -75,21 +95,20 @@ int main(){
 			at = ss[j];
 
 			if(j == 0)
-				f = l = bb(0,t-1,at,-1);
+				f = l = bb1(0,t-1,at);
 
-			else if(l>=0){
-				pos = bb(l+1,t-1,at,l);
+			if(l>=0 && j != 0){
+				pos = bb(0,t-1,at,l);
 
 				l = pos;
 			}
-			else
+			if(l < 0)
 				flag = 1;
 
-			printf("Achei %c em %d\n",at,l);
 		}
 
 		if(!flag)
-			printf("Matched %d %d\n",f,l);
+			printf("Matched %d %d\n",p[f].id,p[l].id);
 		else
 			printf("Not matched\n");
 
