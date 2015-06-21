@@ -1,28 +1,29 @@
 #include <cstdio>
 #include <algorithm>
+#include <cstring>
 
 using namespace std;
 
 int v[105][105];
-int m[105][105] = {-1};
+int m[105][105];
 int h,w;
 
 int pd(int i, int j){
 
-	if(i == w) return 0;
-	if(j == -1 || j == h) return 0;
+	if(j == -1 || j == w) return 0;
+	if(i == h-1) return v[i][j];
 
 	if(m[i][j] != -1) return m[i][j];
 
-
-
-	return max(max(r1,r2),r3);
+	m[i][j] = v[i][j] + max(max(pd(i+1,j),pd(i+1,j+1)),pd(i+1,j-1));
+	return m[i][j];
 }
 
 int main(){
 	int t;
 	scanf("%d",&t);
 	while(t--){
+		memset(m,-1,sizeof m);
 		scanf("%d %d",&h,&w);
 		for(int i = 0; i < h; i++)
 			for(int j = 0; j < w; j++)
