@@ -1,41 +1,42 @@
 #include <cstdio>
+#include <algorithm>
+#include <vector>
 #define MAX 1000000
 
 using namespace std;
 
 int n, t;
-long long fib[48], v[22];
-unsigned long long vol = 1;
-
-int pd(unsigned long long k){
-
-	if(m[k][q] != -1) return m[k][q];
-	
-	if()
-	
-
-
-
-}
+vector<int> fib;
+vector<int>::iterator it;
 
 int main(){
 
-	fib[0] = 1;
-	fib[1] = 2;
+	fib.push_back(1);
+	fib.push_back(2);
 	for(int i = 2; i < 45; i++)
-		fib[i] = fib[i-1] + fib[i-2];
+		fib.push_back(fib[i-1] + fib[i-2]);
 
-	scanf("%d %d",&t,&n);
+	scanf("%d",&t);
 
-	while(t){
+	int c = 1;
+	while(c <= t){
+	
+		long long ans = 1;
+		scanf("%d",&n);
+
 		for(int i = 0; i < n; i++){
-			scanf("%d",&v[i]);
-			vol *= v[i];
+			int a, b = 0;
+			scanf("%d",&a);
+			while(a){
+				it = upper_bound(fib.begin(),fib.end(),a);
+				--it;
+				b++;
+				a -= *it; 	
+			}
+			ans *= b;			
 		}
 
-		int ans = pd(vol,)
-
-
+		printf("Case %d: %lld\n",c++,ans);
 	}
 	
 	
