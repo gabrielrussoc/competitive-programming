@@ -1,32 +1,34 @@
 #include <cstdio>
-#include <map>
+#include <set>
 #include <algorithm>
 
 using namespace std;
 
 int main(){
 
-	map<int,int> m;
+	set<int> s;
+	int v[1000004];
 
-	int t,n, lo = 0, max = 0;
+	int t,n;
 	scanf("%d",&t);	
 	while(t--){
+		int a,n, ans = 0;
 		scanf("%d",&n);
-		int hi = 0;
-		for(int i = 0; i < n; i++){
-			int a;
-			scanf("%d",&a);
-			if(!m.insert(make_pair(a,i)).second){
-				if(hi - lo > max)
-					max = hi - lo;
-				lo = m[a]+1;
-				hi = lo-1;
+		for(int i = 0; i < n; i++)
+			scanf("%d",&v[i]);
+		int i,l = 0;
+		for(i = 0; i < n; i++){
+			if(!s.insert(v[i]).second){
+				while(v[l] != v[i]){
+					s.erase(v[l]);
+					l++;
+				}
+				l++;
 			}
-			hi++;	
+			if(i-l+1 > ans)
+				ans = i-l+1;
 		}
-		if(hi - lo > max)
-			max = hi - lo;
-		printf("%d\n",max);
-		m.clear();
+		printf("%d\n",ans);
+		s.clear();
 	}
 }

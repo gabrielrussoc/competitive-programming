@@ -6,10 +6,10 @@ int main(){
 	
 	int n;
 	while(scanf("%d",&n) && n != 0){
-		if(n % 3 == 0)
-			printf("Bob\n");
-		else
+		if(n == 1 || n == 2)
 			printf("Alice\n");
+		else
+			printf("Bob\n");
 	}
 
 }
