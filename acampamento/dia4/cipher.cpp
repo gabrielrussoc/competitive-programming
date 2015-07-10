@@ -3,7 +3,6 @@
 #include <string>
 #include <cstring>
 
-
 using namespace std;
 
 int main(){
@@ -20,23 +19,29 @@ int main(){
 		}
 		int k;
 		while(scanf("%d",&k) && k != 0){
-			scanf(" %[^\n]",aux);
+			char c;
+			scanf("%c%[^\n]",&c,aux);
 			int t = strlen(aux);
 			while(t < n)
 				aux[t++] = ' ';
 			aux[n] = '\0';
+			//printf("%s\n",aux);
 
 			s = aux;
-
-			//printf("%s\n",aux);
-
-			while(k--){
-				for(int i = 0; i < n; i++)
-					aux[v[i]] = s[i];
-				s = aux;
-				printf("%s\n",aux);
+			for(int i = 0; i < n; i++){
+				int cont = 1;
+				int cur = v[i];
+				while(cur != i){
+					cur = v[cur];
+					cont++;
+				}
+				for(int j = 0; j < (k%cont); j++)
+					cur = v[cur];
+				aux[cur] = s[i]; 
 			}
-			//printf("%s\n",aux);
+
+			printf("%s\n",aux);
 		}
+		printf("\n");
 	}
 }
