@@ -1,39 +1,72 @@
 #include <cstdio>
 #include <algorithm>
 #include <cstring>
-#define MAX 201
-#define SMAX 101
+
 using namespace std;
 
-int n, m, tmp, ans;
-int vpd[MAX][SMAX][SMAX];
-int cars[MAX];
 
-int pd(int k, int l, int r){
-	if(vpd[k][l][r]!=-1) return vpd[k][l][r];
-	if(k == m) return 0;
-	if(l<cars[k] && r<cars[k]) return 0;
-	if(l >= cars[k]){
-		if(r>=cars[k])
-			vpd[k][l][r] = 1 + max(pd(k+1, l-cars[k], r), pd(k+1, l, r-cars[k]));
-		else
-			vpd[k][l][r] = 1 + pd(k+1, l-cars[k], r);
+int m[207][30003],m2[207];
+int c[207];
+int n,p;
+
+int pd(int k, int r, int t){
+
+	if(m[k][r] != -1) return m[k][r];
+	if(t-r > n || r > n) return -1;
+	if(k == p) return 0;
+	
+	int r1,r2;
+	r1 = 1 + pd(k+1,r+c[k],t+c[k]);
+	r2 = 1 + pd(k+1,r,t+c[k]);
+
+	int ans = max(r1,r2);
+
+	m[k][r] = ans;
+	return ans;
+}
+
+void pd2(int k, int r, int t){
+
+	if(k == p) return;
+	if(t-r > n || r > n) return;
+
+	int r1,r2;
+	r1 = 1 + pd(k+1,r+c[k],t+c[k]);
+	r2 = 1 + pd(k+1,r,t+c[k]);
+
+	if(r1 > r2){
+		m2[k] = 1;
+		pd2(k+1,r+c[k],t+c[k]);
 	}
 	else{
-		vpd[k][l][r] = 1 + pd(k+1, l, r-cars[k]);
+		m2[k] = 0;
+		pd2(k+1,r,t+c[k]);
 	}
-	return vpd[k][l][r];
+
 }
 
+
 int main(){
-	scanf("%d", &n);
-	vector<string> v;
-	memset(vpd, -1, sizeof vpd);
-	m = 0;
-	while(scanf("%d", &tmp), tmp!=0){
-		cars[m] = tmp/100;
-		m++;
+
+	memset(m,-1,sizeof m);
+	scanf("%d",&n);
+	n *= 100;
+
+	p = 0;
+	int a;
+	while(scanf("%d",&a) && a != 0){
+		c[p] = a;
+		p++;
+		if(p > 200) break;
 	}
-	ans = pd(0, n, n);
-	printf("%d\n", ans);
+
+	int ans = pd(0,0,0);
+	pd2(0,0,0);
+
+	printf("%d\n",ans);
+
+	for(int i = 0; i < ans; i++)
+		printf("%s\n", m2[i] == 1 ? "port" : "starboard");
+
 }
+
