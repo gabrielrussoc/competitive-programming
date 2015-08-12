@@ -1,54 +1,44 @@
 #include <cstdio>
 #include <cstring>
-
+typedef long long num;
 using namespace std;
 
 
-int in[55][55], out[55][55], tmp[55][55];
 int M,n;
 const int MODN = 1000000007;
 
-void clear(){
+struct Matrix {
+    num v[55][55];
+};
+
+Matrix I, O, in,ans;
+
+void mult(Matrix &x, Matrix &y){
+    Matrix t = O;
     for(int i = 0; i < M; i++)
         for(int j = 0; j < M; j++)
-            tmp[i][j] = 0;
-}
-void update(){
-    for(int i = 0; i < M; i++)
-        for(int j = 0; j < M; j++)
-            out[i][j] = tmp[i][j];
+            for(int k = 0; k < M; k++){
+                t.v[i][j] += (x.v[i][k] * y.v[k][j])%MODN;
+                t.v[i][j] %= MODN;
+            }
+
+    x = t;
 }
 
-void mult() {
-    clear();
-    for(int i = 0; i < M; i++)
-        for(int j = 0; j < M; j++)
-            for(int k = 0; k < M; k++)
-                tmp[i][j] += (out[i][k] * in[k][j])%MODN;
-    update();
-}
-
-void quad() {
-    clear();
-    for(int i = 0; i < M; i++)
-        for(int j = 0; j < M; j++)
-            for(int k = 0; k < M; k++)
-                tmp[i][j] += (out[i][k] * out[k][j])%MODN;
-    update();
-}
-
-void solve(){
+Matrix solve(){
+    
+    Matrix x = I;
+    Matrix y = in;
+    
     while(n){
-        if(n&1){
-            mult();
-            n--;
-        }
-        else{
-            quad();
-            n /= 2;
-        }
+        if(n%2 == 1)
+            mult(x,y);
+        mult(y,y);
+        n /= 2;
     }
+    return x;
 }
+
 
 int main(){
     int t;
@@ -57,13 +47,19 @@ int main(){
         scanf("%d %d",&M,&n);
         for(int i = 0; i < M; i++){
             for(int j = 0; j < M; j++){
-                scanf("%d",&in[i][j]);
-                out[i][j] = (i==j);
+                scanf("%lld",&in.v[i][j]);
+                I.v[i][j] = (i==j);
+                O.v[i][j] = 0;
+                
             }
         }
-        solve();
-        for(int i = 0; i < M; i++)
-            for(int j = 0; j < M; j++)
-                printf("%d%c",out[i][j],j == M-1 ? '\n' : ' ');
+        ans = solve();
+        for(int i = 0; i < M; i++) {
+            for(int j = 0; j < M; j++) {
+                printf("%lld ",ans.v[i][j]);    
+            }
+            printf("\n");
+        }
+            
     }
 }
