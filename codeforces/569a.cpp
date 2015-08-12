@@ -5,16 +5,20 @@ using namespace std;
 int main(){
     int T, S, q;
     scanf("%d %d %d",&T,&S,&q);
-    double taxa = q*(q-1);
-    double ouvi,baixou, aux;
     int ans = 1;
-    baixou = S;
+    int listen,down;
+    listen = 0;
+    down = S;
 
-    while(1) {
-        ouvi = taxa*baixou;
-        if(ouvi >= T) break;
-        ans++;
-        baixou = ouvi;
+    while(down < T) {
+        down += q-1;
+        listen += q;
+        if(down >= T)
+            break;
+        if(listen >= down){
+            ans++;
+            listen = listen-down;
+        }
     }
     printf("%d\n",ans);
 }
