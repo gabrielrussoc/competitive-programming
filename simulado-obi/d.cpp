@@ -1,31 +1,32 @@
 #include <cstdio>
 #include <cstring>
+#include <map>
+#define pii pair<int,int>
+#define mp make_pair
 
 using namespace std;
 
 int w,D,V;
 int d[12];
-int memo[5000005][10];
+map<pii,int> memo;
 
 int dp(int n, int l){
     if(l < 0 || n < 0) return 0;
     if(l == 0 && n == 0) return 1;
-    int &k = memo[n][l];
-    if(k != -1) return k;
+    if(memo.find(mp(n,l)) != memo.end()) return memo[mp(n,l)];
     int ans = 0; 
     for(int i = 0; i < D; i++){
         ans += dp(n-d[i],l-1);
         if(n != 0 && d[i] != 0)
             if(n%d[i] == 0) ans += dp(n/d[i],l-1); 
     }
-    k = ans;
+    memo[mp(n,l)]= ans;
     return ans;
 }
 
 
 int main(){
 
-    memset(memo,-1,sizeof memo);
     scanf("%d %d",&w,&D);
     for(int i = 0; i < D; i++)
         scanf("%d",&d[i]);

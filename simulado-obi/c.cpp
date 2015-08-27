@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int freqx[100005], freqy[100005];
+long long freqx[100005], freqy[100005];
 pii point[100005];
 
 int main(){
