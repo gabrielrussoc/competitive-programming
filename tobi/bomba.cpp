@@ -13,10 +13,9 @@
 
 using namespace std;
 
-vector<pii> adj[505];
-int d[505];
-int f[505][505];
-int s, cont = 0;
+vector<int> adj[1805];
+int d[1805];
+int s;
 
 void bfs (int j) {
     queue<int> q;
@@ -24,30 +23,20 @@ void bfs (int j) {
     d[j] = 0;
     while(q.size()){
        	int a = q.front();
-		if (a == s) break;
        	q.pop(); 
        	int k = adj[a].size();
        	for(int i = 0; i < k; i++){
-           	int b,c;
-           	b = adj[a][i].ff;
-		   	c = adj[a][i].ss;
-			if(d[a]%3 == 0 && c){
-				if(d[b] == INT_MAX || d[b]%3 != (d[a] + 1)%3){
-					d[b] = d[a]+1;
-					q.push(b);
-				}   
-			} else if (d[a]%3 && !c){
-				if(d[b] == INT_MAX || d[b]%3 != (d[a] + 1)%3){
-					d[b] = d[a]+1;
-					q.push(b);
-				}   
-			}
-	   }
+           	int b = adj[a][i];
+            if(d[b] > d[a]+1){
+                d[b] = d[a]+1;
+                q.push(b);
+            }
+	    }
     }
 }
 
 int main(){
-    for(int i = 0; i < 505; i++){
+    for(int i = 0; i < 1805; i++){
         d[i] = INT_MAX;
     }
     int n,e,m;
@@ -56,10 +45,16 @@ int main(){
     for(int i = 0; i < m; i++){
         int a,b,t;
         scanf("%d %d %d",&a,&b,&t);
-        adj[a].pb(mp(b,t));
+        if(t == 0){
+            adj[3*a+1].pb(3*b+2);
+            adj[3*a+2].pb(3*b);
+        }
+        else
+            adj[3*a].pb(3*b+1);
     }
-	bfs(e);
-	if(d[s] == INT_MAX) printf("*\n");
-	else printf("%d\n",d[s]);
+	bfs(3*e);
+    int ans = min(d[3*s],min(d[3*s+1],d[3*s+2]));
+	if(ans == INT_MAX) printf("*\n");
+	else printf("%d\n",ans);
 
 }
