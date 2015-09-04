@@ -30,7 +30,9 @@ int main(){
             tot += v[i];
         }
         sort(v,v+n);
-        memset(m,-1,sizeof m);
+        for(int i = 0; i <= (tot+x+y)/2; i++)
+            for(int j = 0; j < n; j++)
+                m[j][i] = -1;
         int ans;
         if(tot&1) ans = 0;
         else ans = pd(0,tot/2-x);
