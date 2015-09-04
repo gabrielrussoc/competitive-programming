@@ -12,11 +12,22 @@ using namespace std;
 
 char nome[15][60];
 char line[230];
+string out[100];
 map<string,int> m;
 map<string,int>::iterator it;
 int r, p;
 vector<int> adj[100];
 int d[100];
+
+bool comp(string a, string b) {
+    const char *s1, *s2;
+    s1 = a.c_str();
+    s2 = b.c_str();
+    if(strcmp(s1+3,s2+3) < 0) return true;
+    if(strcmp(s1+3,s2+3) == 0) return a[0] < b[0];
+    return false;
+
+}
 
 void solve(){
     int k = strlen(line);
@@ -85,11 +96,17 @@ int main(){
         }
         inf();
         bfs(0);
-        for(int i = 1; i < r; i++){
-            if(d[i] == INT_MAX)
-                printf("%s: infinito\n",nome[i]);
+        int t = 0;
+        for(it = m.begin(); it != m.end(); it++){
+            if(it->first != "P. Erdos")
+                out[t++] = it->first;
+        }
+        sort(out,out+t,comp);
+        for(int i = 0; i < t; i++){
+            if(d[m[out[i]]] == INT_MAX)
+                printf("%s: infinito\n",out[i].c_str());
             else
-                printf("%s: %d\n", d[i]);
+                printf("%s: %d\n", out[i].c_str(),d[m[out[i]]]);
         }
         m.clear();
         printf("\n");
