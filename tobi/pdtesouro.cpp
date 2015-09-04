@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstring>
+#include <algorithm>
 using namespace std;
 
 int v[105];
@@ -12,8 +13,11 @@ int pd(int i, int p){
     int &k = m[i][p];
     if(k != -1) return k;
     
-    k = pd(i+1,p-v[i]) + pd(i+1,p);
-    return k;
+    if(pd(i+1,p-v[i]))
+      return k = 1;
+        if(pd(i+1,p))
+      return k = 1;
+    return k = 0;
 }
 
 int main(){
@@ -25,6 +29,7 @@ int main(){
             scanf("%d",&v[i]);
             tot += v[i];
         }
+        sort(v,v+n);
         memset(m,-1,sizeof m);
         int ans;
         if(tot&1) ans = 0;
@@ -37,4 +42,4 @@ int main(){
         printf("\n");
     }
 
-}
+}  
