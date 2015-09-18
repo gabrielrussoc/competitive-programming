@@ -57,8 +57,8 @@ int main(){
             scanf("%d",&mm);
             for(int j = 0; j < mm; j++){
                 cin >> ss;
-                adj[m[s]].pb(m[ss]);
-                g[m[ss]]++;
+                adj[m[ss]].pb(m[s]);
+                g[m[s]]++;
             }
         }
         toposort();
@@ -66,11 +66,11 @@ int main(){
         if(ok){
             for(it = m.begin(); it != m.end(); it++)
                 ppl[it->second] = it->first;
-            for(int i = n-1; i >= 0; i--)
+            for(int i = 0; i < n; i++)
                 printf("%s ",ppl[ans[i]].c_str());
         }
         else
-            printf("impossivel\n");
-        printf("\n");
+            printf("impossivel");
+        printf("\n\n");
     }
 }
