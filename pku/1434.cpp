@@ -1,3 +1,4 @@
+#include <climits>
 #include <cstdio>
 #include <algorithm>
 #define eps 1e-8
@@ -17,7 +18,7 @@ int main(){
         scanf("%d",&n);
         num tot = 0, vol, maxb = 0;
         for(int i = 0; i < n; i++){
-            scanf("%d %d %d %d",&v[i].b,&v[i].h,&v[i].w,&v[i].d);
+            scanf("%llu %llu %llu %llu",&v[i].b,&v[i].h,&v[i].w,&v[i].d);
             tot += v[i].w * v[i].h * v[i].d;
             maxb = max(maxb, v[i].b + v[i].h);
         }
@@ -31,15 +32,13 @@ int main(){
                 double mid = (lo+hi)/2;
                 for(int i = 0; i < n; i++){
                     if(v[i].b <= mid){
-                        //printf("Caixote %d embaixo de %lf\n",i+1,mid);
                         if(v[i].b + v[i].h > mid){
-                          //  printf("--mas parcialmente\n");
-                            tot2 += (v[i].b + mid) * v[i].w * v[i].d;    
+                            tot2 += (mid - v[i].b) * v[i].w * v[i].d;    
                         }
                         else tot2 += v[i].h * v[i].w * v[i].d;
                     }
                 }
-                if(tot2 <= vol) lo = mid;
+                if(tot2 < vol) lo = mid;
                 else hi = mid-eps;   
             }
             printf("%.2lf\n",lo);
