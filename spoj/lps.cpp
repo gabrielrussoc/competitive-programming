@@ -25,24 +25,26 @@ int main(){
     int n;
     char c;
     scanf("%d",&n);
-    for(int i = 0; i < 2*n - 1; i += 2){
+    for(int i = 1; i < 2*n; i += 2){
         scanf(" %c",&s[i]);
-        if(i != 2*n-2) s[i+1] = 'z'+2;
+        s[i+1] = 'z'+2;
     }
-    s[2*n-1] = '\0';
+    s[0] = 'z'+2;
+    s[2*n+1] = '\0';
     x[0] = 1;
     he[0] = hd[0] = 0;
-    for(int i = 1; i <= 2*n-1; i++){
+    for(int i = 1; i <= 2*n+1; i++){
         x[i] = X*x[i-1];
         he[i] = he[i-1]*X + cv(s[i-1]);
-        hd[i] = hd[i-1]*X + cv(s[2*n-1-i]);
+        hd[i] = hd[i-1]*X + cv(s[2*n+1-i]);
     }
-    int lo = 1, hi = 2*n-1;
+    int lo = 1, hi = n;
     while(lo != hi){
-        int mid = (lo+hi)/2;
+        int mid = (lo+hi+1)/2;
+        int aux = 2*mid+1;
         int ok = 0;
-        for(int i = 0; i < 2*n-mid; i++){
-            if(calce(i,i+mid-1) == calcd(2*n-2-(i+mid-1),2*n-2-i)){
+        for(int i = 0; i <= 2*n+1-aux; i++){
+            if(calce(i,i+aux-1) == calcd(2*n-(i+aux-1),2*n-i)){
                 ok = 1;
                 break;
             }
@@ -50,5 +52,5 @@ int main(){
         if (ok) lo = mid;
         else hi = mid-1;
     }
-    printf("%d\n",lo/2);
+    printf("%d\n",lo);
 }
