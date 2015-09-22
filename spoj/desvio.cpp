@@ -9,8 +9,7 @@ const int N = 256;
 
 int n,m,c,k,a,b,w;
 vector<pii> adj[N];
-int d[N], W[N][N];
-int ans[N];
+int d[N];
 
 void solve(){
     priority_queue<pii> pq;
@@ -22,39 +21,32 @@ void solve(){
         pq.pop();
         for(int i = 0; i < y; i++){
             int nx = adj[x][i].ff, wei = adj[x][i].ss;
+            printf("%d->%d\n",x,nx);
             if(d[nx] > d[x] + wei){
                 d[nx] = d[x] + wei;
                 pq.push(mp(-d[nx],nx));
-                ans[nx] = x;
             }
         }
     }
 }
-
-
 
 int main(){
     while(scanf("%d %d %d %d",&n,&m,&c,&k) && n != 0){
         for(int i = 0; i < n; i++){
             adj[i].clear();
             d[i] = INT_MAX;
-            ans[i] = -1;
         }
         for(int i = 0; i < m; i++){
             scanf("%d %d %d",&a,&b,&w);
-            adj[a].pb(mp(b,w));
-            W[a][b] = W[b][a] = w;
+            if(a > b) swap(a,b);
+            if(a >= c || a == b+1)
+                adj[b].pb(mp(a,w));
+            if(b >= c)
+                adj[a].pb(mp(b,w));
+
         }
         solve();
-        int p = c-1;
-        int j, resp = 0;
-        while(ans[p] != -1){
-            if(ans[p] < c) j = ans[p];
-            p = ans[p];
-        }
-        for(int i = j; i < c-1; i++){
-            resp += W[i][i+1];
-        }
+        
         printf("%d\n",d[c-1]);
 
     }
