@@ -21,7 +21,6 @@ void solve(){
         pq.pop();
         for(int i = 0; i < y; i++){
             int nx = adj[x][i].ff, wei = adj[x][i].ss;
-            printf("%d->%d\n",x,nx);
             if(d[nx] > d[x] + wei){
                 d[nx] = d[x] + wei;
                 pq.push(mp(-d[nx],nx));
@@ -39,11 +38,10 @@ int main(){
         for(int i = 0; i < m; i++){
             scanf("%d %d %d",&a,&b,&w);
             if(a > b) swap(a,b);
-            if(a >= c || a == b+1)
-                adj[b].pb(mp(a,w));
-            if(b >= c)
+            if(a >= c || b == a+1)
                 adj[a].pb(mp(b,w));
-
+            if(b >= c)
+                adj[b].pb(mp(a,w));
         }
         solve();
         
