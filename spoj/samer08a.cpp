@@ -12,7 +12,7 @@ int n,m,s,e,u,v,w;
 void dij(){
     priority_queue<pii> q;
     q.push(pii(0,s));
-    d[0] = 0;
+    d[s] = 0;
     while(q.size()){
         int x = q.top().ss;
         q.pop();
@@ -20,7 +20,7 @@ void dij(){
         for(int i = 0; i < k; i++){
             pii nx = adj[x][i];
             if(forbid[x][nx.ss]) continue;
-            if(d[nx.ss] => d[x] + nx.ff){
+            if(d[nx.ss] > d[x] + nx.ff){
                 d[nx.ss] = d[x] + nx.ff;
                 q.push(pii(-d[nx.ss],nx.ss));
             }
