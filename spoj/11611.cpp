@@ -88,13 +88,16 @@ int main(){
         for(int i = 1; i <= n; i++) {
             build (1,i,1,n,node(1,0,0));
         }
-        scanf(" %c %d %d",&c,&a,&b);
-        if (c == 'C') {
-            node ans = query(a,b,1,n,1);
-            printf("%d %d %d\n",ans.h,ans.e,ans.r);
+        for(int i = 0; i < m; i++) {
+            scanf(" %c %d %d",&c,&a,&b);
+            if (c == 'C') {
+                node ans = query(a,b,1,n,1);
+                printf("%d %d %d\n",ans.h,ans.e,ans.r);
+            }
+            else {
+                update(a,b,1,n,1);
+            }
         }
-        else {
-            update(a,b,1,n,1);
-        }
+        printf("\n");
     }
 }
