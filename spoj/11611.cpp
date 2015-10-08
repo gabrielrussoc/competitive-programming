@@ -25,9 +25,9 @@ void build (int no, int ind, int l, int r, node val) {
         tree[no] = val;
     }
     else {
-        int mid = (l+r+1)/2;
-        if(mid <= ind) build(2*no, ind, mid, r, val);
-        else build (2*no+1,ind,l,mid-1,val);
+        int mid = (l+r)/2;
+        if(ind <= mid) build(2*no, ind, l, mid, val);
+        else build (2*no+1,ind,mid+1,r,val);
         tree[no] = tree[2*no] + tree[2*no+1];
     }
 
@@ -52,7 +52,7 @@ void cycle(int no, int k) {
 
 void unlazy(int no, int k){
     cycle(no,lazy[no]);
-    if(k){
+    if(!k){
         lazy[2*no] += lazy[no]; lazy[2*no+1] += lazy[no];
     }
     lazy[no] = 0;
@@ -60,24 +60,26 @@ void unlazy(int no, int k){
 
 void update (int a, int b, int l, int r, int no) {
     unlazy(no,l==r);
-    if(b < l || a > r) return;
-    if(a >= l && b <= r) {
+    if(l > b || r < a) return;
+    if(l >= a && r <= b) {
         lazy[no]++;
         unlazy(no,l==r);
         return;
     } 
-    update(a,b,l/2,r,2*no);
-    update(a,b,l,r/2 - 1,2*no+1);
+    int mid = (l+r)/2;
+    update(a,b,l,mid,2*no);
+    update(a,b,mid+1,r,2*no+1);
     tree[no] = tree[2*no] + tree[2*no+1];
 }
 
 node query (int a, int b, int l, int r, int no) {
     unlazy(no, l==r);
-    if(b < l || a > r) return node(0,0,0);
-    if(a >= l && b <= r) {
+    if(l > b || r < a) return node(0,0,0);
+    if(l >= a && r <= b) {
         return tree[no];
     }
-    return query(a,b,l/2,r,2*no) + query(a,b,l,r/2 - 1,2*no+1);
+    int mid = (l+r)/2;
+    return query(a,b,l,mid,2*no) + query(a,b,mid+1,r,2*no+1);
 }
 
 int main(){
@@ -91,7 +93,8 @@ int main(){
             node ans = query(a,b,1,n,1);
             printf("%d %d %d\n",ans.h,ans.e,ans.r);
         }
-        else
+        else {
             update(a,b,1,n,1);
+        }
     }
 }
