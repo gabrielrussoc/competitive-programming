@@ -6,7 +6,7 @@ const int ms = 100005;
 
 int bit[55][ms];
 int n, K;
-int dp[10004][55], v[10004];
+int dp[55], v[10004];
 
 void upd(int k, int idx, int val){
     for(int i = idx; i < ms; i += i&-i){
@@ -28,14 +28,21 @@ int main(){
     scanf("%d %d",&n,&K);
     int ans = 0;
     memset(bit,0,sizeof bit);
-    for(int i = 0; i < n; i++)
-        scanf("%d",&v[i]);
     for(int i = 0; i < n; i++){
-        for(int k = 1; k <= K; k++){
-            dp[i][k] = query(k-1,v[i]-1) + 1;
-            upd(k,v[i],dp[i][k]);
+        scanf("%d",&v[i]);
+        v[i]++;
+    }
+    memset(dp,0,sizeof dp);
+    for(int i = 0; i < n; i++){
+        upd(1,v[i],1);
+        for(int k = 2; k <= K; k++){
+            int x = query(k-1,v[i]-1);
+            dp[k] += x;
+            dp[k] %= MOD;
+            upd(k,v[i],x);
         }
     }
 
-    printf("%d\n",dp[n-1][K]);
+    printf("%d\n",dp[K]);
 }
+
