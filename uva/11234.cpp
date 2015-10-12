@@ -3,9 +3,9 @@
 #define ff first
 #define ss second
 using namespace std;
-typedef pair<int,int> pii;
 
-char v[10004], ans[10004];
+char v[10004];
+int ans[10004];
 stack<int> s;
 vector<int> adj[10004];
 
@@ -40,6 +40,7 @@ int main() {
             }        
             s.push(i);
         }
+        s.pop();
         solve(k-1);
         for(int i = k-1; i >= 0; i--)
             printf("%c",v[ans[i]]);
