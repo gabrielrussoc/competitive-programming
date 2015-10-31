@@ -6,16 +6,19 @@ int n;
 int main () {
     while (scanf ("%d", &n) != EOF) {
         int ans = 1;
-        int aux = n;
-        for (int i = 2; i * i <= n; i++) {
+        for (long long i = 2; i * i <= n; i++) {
             int cont = 0;
             while (n % i == 0) {
                 n /= i;
-                if(i != 2) cont++;
+                cont++;
             }
-            ans *= cont;
+            if(cont){
+                ans *= i-1;
+                for(int j = 0; j < cont-1; j++)
+                    ans *= i;
+            }
         }
-        if(n != 1) ans *= 2;
-        printf("%d\n",aux/2 - ans+1);
+        if(n != 1) ans *= n-1;
+        printf("%d\n",ans/2);
     }
 }
