@@ -36,14 +36,14 @@ int main() {
         
         for(int i = 0; i < n; i++)
             for(int j = n; j < n+m; j++)
-                if(v[i] && v[j] % v[i]){
+                if((v[i] && v[j] % v[i] == 0) || (v[i] == v[j] && v[i] == 0)){
                     adj[i].pb(j);
                     adj[j].pb(i);
                 }
         int ans = 0;
         while(1){
             int i;
-            for(int i = n; i < n+m; i++) vis[i] = 0;
+            for(int j = n; j < n+m; j++) vis[j] = 0;
             for(i = 0; i < n ; i++){
                 if(M[i] == -1 && temAumento(i)){
                     ans++;
@@ -52,6 +52,6 @@ int main() {
             }
             if(i == n) break;
         }
-        printf("Case %d: %d\n",tc++,m+n-ans);
+        printf("Case %d: %d\n",tc++,ans);
     }
 }
