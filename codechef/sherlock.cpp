@@ -41,6 +41,7 @@ bool comp3 (query a, query b){
 
 int main(){
     scanf("%d",&n);
+    for(int i = 0; i <= n; i++) bit[i] = 0;
     rz = sqrt(n);
     for(int i = 0; i < n; i++){
         scanf("%d",&v[i].ff);
@@ -58,12 +59,13 @@ int main(){
         q[i].i = i;
     }
     sort(q,q+Q,comp2);
-    int cl = -1, cr = -1;
+    int cl = 0, cr = 0;
+    update(v[0].ff,1);
     int ans = 0;
     for(int i = 0; i < Q; i++){
         int l,r;
-        l = q[i].l;
-        r = q[i].r;
+        l = q[i].l-1;
+        r = q[i].r-1;
         while (cl > l){
             cl--;
             ans += queryb(v[cl].ff-1);
@@ -75,7 +77,7 @@ int main(){
             cl++;
         }
         while (cr > r){
-            ans -= queryb(k-1) - queryb(v[cl].ff);
+            ans -= queryb(k-1) - queryb(v[cr].ff);
             update(v[cr].ff,-1);
             cr--;
         }
