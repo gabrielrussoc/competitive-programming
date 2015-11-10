@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
+typedef unsigned long long ll;
 
 ll memo[20][12][2][2];
 char str[24];
@@ -21,9 +21,16 @@ ll dp(int i, int ult, int pre, int f){
 
 int main(){
     ll n;
-    while(scanf("%lld",&n) != EOF){
-        memset(memo,-1,sizeof memo);
-        sprintf(str,"%lld",n);
-        printf("%lld\n",n-dp(0,0,1,0));
+    while(scanf("%llu",&n) != EOF){
+        ll l, r;
+        l = 0; r = 10000000000000000000;
+        while(l != r){
+            ll mid = l + (r-l)/2;
+            memset(memo,-1,sizeof memo);
+            sprintf(str,"%llu",mid);
+            if (mid-dp(0,0,1,0) >= n) r = mid;
+            else l = mid+1;
+        }
+        printf("%llu\n",l);
     }
 }
