@@ -8,6 +8,7 @@ typedef pair<int,int> pii;
 const int N = 100005;
 int g[N], go[N], ret[N], forbid[N];
 vector<pii> adj[N];
+int cont = 0;
 
 void del(int no){
     forbid[no] = 1;
@@ -15,7 +16,7 @@ void del(int no){
     for(int i = 0; i < adj[no].size(); i++)
         if(!forbid[adj[no][i].vert]) pai = adj[no][i].vert;
     g[pai]--;
-    if(g[pai] == 1 && !go[pai]) del(pai); 
+    if(g[pai] == 1 && !go[pai] && pai != 1) del(pai); 
 }
 
 int pre(int no, int pai){
@@ -51,12 +52,11 @@ int main(){
         go[a] = 1;
     }
     for(int i = 2; i <= n; i++)
-        if(g[i] == 1 && !go[i]) del (i);
+        if(g[i] == 1 && !go[i] && !forbid[i]) del (i);
     
     int foo;
     foo = pre(1,-1);
-    if(go[1]) foo = ret[1];
-    else foo = solve(1,-1);
+    foo = solve(1,-1);
     printf("%d\n",foo);
 
 }
