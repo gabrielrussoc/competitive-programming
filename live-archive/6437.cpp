@@ -19,7 +19,9 @@ void join(int i, int j){
     if(wf[i] > wf[j]) swap(i,j);
     wf[j] += wf[i];
     uf[i] = j;
-    pwr[i] = pwr[j];
+    int x = pwr[i] || pwr[j];
+    pwr[i] = x;
+    pwr[j] = x;
 }
 
 int main(){
@@ -49,7 +51,7 @@ int main(){
             q.pop();
             int a = edge.first;
             int b = edge.second;
-            if((find(a) != find(b)) && (pwr[find(a)] ^ pwr[find(b)])){
+            if((find(a) != find(b)) && !(pwr[find(a)]&&pwr[find(b)])){
                 join(a,b);
                 ans += w;
             }
