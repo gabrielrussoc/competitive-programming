@@ -39,16 +39,15 @@ void dfs(int no, int d, int k){
 
 ll solve(int a, int b, ll y){
     a = find(a); b = find(b);
-    if(pf[a] < pf[b]) swap(a,b);
-    while(pf[a] > pf[b] && y) {
-        y /= p[pai[a].second];
-        a = find(pai[a].first);
-    }
     while(a != b && y){
-        if(a > 1) y /= p[pai[a].second];
-        if(b > 1) y /= p[pai[b].second];
-        a = find(pai[a].first);
-        b = find(pai[b].first); 
+        if(pf[a] > pf[b]){
+            y /= p[pai[a].second];
+            a = find(pai[a].first);
+        }
+        else {
+            y /= p[pai[b].second];
+            b = find(pai[b].first);
+        }
     }
     return y;
 }
