@@ -19,14 +19,36 @@ int adj[N][N], g[N];
 char cor[N];
 int n,m,u,v;
 
+bool check(){
+    for(int u = 0; u < n; u++)
+        for(int v = u+1; v < n; v++){
+            if(abs(cor[u]-cor[v]) <= 1){
+                if(!adj[u][v]) return false;
+            }
+            else
+                if(adj[u][v]) return false;
+        }
+    cor[n] = 0;
+    printf("Yes\n%s\n",cor);
+    return true;
+}
+
 bool solve (){
     for(int u = 0; u < n; u++) if(g[u] == n-1) cor[u] = 'b';        
-    for(int u = 0; u < n; u++) if(g[u] == 0)
+    for(int u = 0; u < n; u++) 
+        if(!cor[u]) {
+            cor[u] = 'a';
+            for(int v = 0; v < n; v++)
+                if(adj[u][v] && !cor[v]) cor[v] = 'a';
+            break;
+        }
+    for(int u = 0; u < n; u++) if(!cor[u]) cor[u] = 'c';
+    return check();
 }
 
 int main() {
     scanf("%d %d",&n, &m);
-    for(int i = 0; i < 0; i++){
+    for(int i = 0; i < m; i++){
         scanf("%d %d",&u,&v);
         u--; v--;
         adj[u][v] = adj[v][u] = 1;
