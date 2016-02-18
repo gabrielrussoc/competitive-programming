@@ -25,7 +25,7 @@ ll cross(point a, point b) { return y(conj(a) * b); }
 int n;
 
 bool comp (int i, int j){
-    if(x(v[i]) == x(v[j])) return y(v[i]) > y(v[i]);
+    if(x(v[i]) == x(v[j])) return y(v[i]) < y(v[j]);
     return x(v[i]) < x(v[j]);
 }
 
@@ -42,7 +42,7 @@ int main() {
     ll a,b;
     for(int i = 0; i < n; i++){
         p[i] = i;
-        scanf("%I64d %I64d",&a,&b);
+        cin >> a >> b;
         v[i] = point(a,b);
     }
     int cont = 0;
