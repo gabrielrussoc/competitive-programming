@@ -29,17 +29,18 @@ bool solve (){
         f = *it;
         if((p+q-f) & 1) continue;
         a[0] = (p+q-f)/2; a[1] = p-a[0]; a[2] = q-a[0];
-        t.erase(a[0]+a[1]); t.erase(a[0]+a[2]); t.erase(a[1]+a[2]);
+        t.erase(t.find(a[0]+a[1]));
+        t.erase(t.find(a[0]+a[2])); 
+        t.erase(t.find(a[1]+a[2]));
         for(int i = 3; i < n && !xab; i++) {
             a[i] = *(t.begin()) - a[0];
             for(int j = 0; j < i && !xab; j++) {
                 if(!t.count(a[i]+a[j])) xab = true;
-                if(!xab) t.erase(a[i]+a[j]);
+                if(!xab) t.erase(t.find(a[i]+a[j]));
             }
         }
         if(!xab) {
-            for(int i = 0; i < n; i++) printf("%d ",a[i]);
-            putchar('\n');   
+            for(int i = 0; i < n; i++) printf("%d%c",a[i], i == n-1 ? '\n' : ' ');
             return true;
         }
     }
