@@ -17,19 +17,45 @@ const int modn = 1000000007;
 
 string ss;
 char s[N];
-pii ans[N];
+pii ans[N], ans2[N];
 map<string, int> m;
 vector<string> v;
 vector<int> adj[N];
+vector<int> adj2[N];
 
 int k = 1,n, mm, vis[N];
+int tim = 1, tp = -1, sc;
+int disc[N], low[N], stac[N], instac[N], comp[N];
+
+void scc (int u) {
+    disc[u] = low[u] = tim++;
+    stac[++tp] = u;
+    instac[u] = 1;
+    
+    for(int v : adj[u]) {
+        if(!disc[v]) {
+            scc(v);
+            low[u] = min(low[u],low[v]);
+        } else if (instac[v])
+            low[u] = min(low[u], disc[v]);
+    }
+    int v;
+    if(low[u] == disc[u]) {
+        do {
+            v = stac[tp--];
+            comp[v] = sc;
+            instac[v] = 0;
+        } while (u != v);
+        sc++;
+    }
+}
 
 void dfs(int u) {
     if(vis[u]) return;
     vis[u] = 1; 
-    for(int it : adj[u]){
-        dfs(it);
-        ans[u] = min(ans[u], ans[it]);
+    for(int v : adj2[u]){
+        dfs(v);
+        ans2[u] = min(ans2[u], ans2[v]);
     }
 }
 
@@ -73,10 +99,19 @@ int main() {
         b = m[ss];
         adj[a].pb(b);
     }
-    for (int i = 1; i < k; i++) dfs(i);
+    for (int i = 1; i < k; i++) scc(i);
+    for (int i = 0; i < sc; i++) ans2[i] = pii(inf,inf);
+    for (int i = 1; i < k; i++) ans2[comp[i]] = min(ans2[comp[i]],ans[i]);
+    for(int u = 1; u < k; u++) 
+        for(int v : adj[u]) 
+            if(comp[u] != comp[v]) {
+                adj2[comp[u]].pb(comp[v]);
+            }
+    for(int u = 0; u < sc; u++)
+        dfs(u);
     int t, r;
     t = r = 0;
-    for(int i = 0; i < mm; i++) r += ans[m[v[i]]].ff, t += ans[m[v[i]]].ss; 
+    for(int i = 0; i < mm; i++) r += ans2[comp[m[v[i]]]].ff, t += ans2[comp[m[v[i]]]].ss; 
     printf("%d %d\n",r,t);
 }
 
