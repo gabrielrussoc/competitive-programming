@@ -16,7 +16,7 @@ const int N = 100004;
 const int modn = 1000000007;
 
 char s[2*N], t[1005], r[2*N];
-int n, m, ze[2*N], zd[2*N], pref[1005], suf[1005];
+int n, p, ze[2*N], zd[2*N], pref[1005], suf[1005];
 
 void zfunc(char *s, int *z) {
     int l, r;
@@ -39,32 +39,42 @@ void zfunc(char *s, int *z) {
 }
 
 int main() {
-    int maxm = 1000;
-    for(int i = 0; i < maxm; i++) s[i] = '#';
+    int maxm = 1000, m;
+    for(int i = 0; i < maxm; i++) s[i] = r[i] = '#';
     scanf(" %s", s+maxm);
     n = strlen(s);
     strcpy(r, s);
     reverse(r+maxm,r+n);
     scanf(" %d",&m);
     int ans = 0;
-    for(int i = 0; i < m; i++) {
-        scanf(" %s", t);
-        int j;
-        for(j = 0; t[j]; j++) s[j] = r[j] = t[j];
-        for(int k = j; k < maxm; k++) s[k] = r[k] = '#';
-        reverse(r,r+j);
+    while(m--){
+        int i;
+        scanf(" %s", t); p = strlen(t);
+        if(p == 1) continue;
+
+        for(i = 0; i < p; i++) s[i] = r[i] = t[i];
+        for(i = p; i < maxm; i++) s[i] = r[i] = '#';
+        reverse(r,r+p);
+
         zfunc(s, ze);
         zfunc(r, zd);
-        if(j == 1) continue;
-        if(ze[maxm] == j) {
-            ans++;
-            continue;
+        
+        for(i = 0; i <= p; i++) pref[i] = n, suf[i] = -1;
+
+        for(i = maxm; i < n; i++) {
+            pref[ze[i]] = min(pref[ze[i]], i-maxm);
+            suf[zd[i]] = max(suf[zd[i]], n-i-1);
+            if(ze[i] == p) break;
         }
-        for(int k = 0; k <= j; k++) pref[k] = n, suf[k] = -1;
-        for(int k = maxm; k < n; k++) pref[ze[k]] = min(pref[ze[k]], k-maxm), suf[zd[k]] = max(suf[zd[k]], n-k-1);
-        for(int k = 0; k <= j; k++)
-            if(k<j) suf[k] = max(suf[k], suf[k+1]), pref[k] = min(pref[k],pref[k+1]);
-        for(int k = 1; k < j; k++) if(pref[k] < suf[j-k] - j + 2) { ans++; break;}
+        if(i < n) { ans++; continue; }
+    
+        for(i = p-1; i >= 0; i--) {
+            pref[i] = min(pref[i], pref[i+1]);
+            suf[i] = max(suf[i], suf[i+1]);
+        }
+    
+        //for(i = 1; i < p; i++) printf("%d :: %d %d\n",i,pref[i], suf[i]);
+        for(i = 1; i < p; i++) if(pref[i] < suf[p-i] - p + 2) { ans++; break;}
             
     }
     printf("%d\n",ans);
