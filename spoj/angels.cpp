@@ -16,13 +16,13 @@ const int N = 304;
 const int modn = 1000000007;
 
 char g[N][N];
-int t, lx[N][N], ly[N][N], k, turn, turn2, x, y;
+int t, lx[N][N], ly[N][N], k, turn, x, y;
 vector<int> adj[N*N];
 int vis[N*N], M[N*N], visy[N][N], visx[N][N];
 
 int dfs (int u) {
-    if(vis[u] == turn2) return 0;
-    vis[u] = turn2;
+    if(vis[u]) return 0;
+    vis[u] = 1;
     for (int v : adj[u])
         if(M[v] == -1 || dfs(M[v])) {
             M[u] = v;
@@ -53,11 +53,11 @@ int main() {
         memset(M, -1, sizeof M);
         k = 0;
         scanf("%d %d", &x, &y);
+        int n = max(x,y);
+        for(int i = 0; i < n*n; i++) adj[i].clear();
         for(int i = 0; i < x; i++)
-            for(int j = 0; j < y; j++) {
+            for(int j = 0; j < y; j++) 
                 scanf(" %c",&g[i][j]);
-                adj[i*x+y].clear();
-            }
 
         for(int i = 0; i < x; i++)
             for(int j = 0; j < y; j++){
@@ -79,10 +79,8 @@ int main() {
             }
 
         int ans = 0;
-        memset(vis,0,sizeof vis);
-        turn2 = 0;
         for(int i = 0; i < a; i++){
-            turn2++;
+            memset(vis,0,sizeof vis);
             if(dfs(i)) ans++;
         }
         printf("%d\n",ans);
