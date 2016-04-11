@@ -15,7 +15,7 @@ const int inf = INT_MAX;
 const int N = 103;
 const int modn = 1000000007;
 
-int n, cost[N], die[N], stay[N];
+int n, cost[N], die[N], stay[N], qtd;
 vector<int> adj[N];
 
 bool dfs(int u, int p) {
@@ -31,6 +31,14 @@ bool comp (int i, int j) {
     return cost[i] > cost[j];
 }
 
+bool can (int k) {
+    for(int i = 0; i < n; i++){
+        qtd = k;
+        if (dfs(i,i)) return true;
+    }
+    return false;
+}
+
 int main() {
     int tc = 1;
     while(scanf("%d",&n) && n) {
@@ -42,8 +50,14 @@ int main() {
             scanf("%d %d",&u,&v); u--; v--;
             adj[u].pb(v); adj[v].pb(u);
         }
-        dfs(0,0);
-        printf("Case %d: %d\n",tc++,ans[0]);
+        for(int i = 0; i < n; i++) sort(adj[i].begin(), adj[i].end(), comp);
+        int lo = 0, hi = INT_MAX;
+        while (lo < hi) {
+            int mid = lo + (hi-lo)/2;
+            if(can(mid)) hi = mid;
+            else lo = mid+1;
+        }
+        printf("Case %d: %d\n",tc++,lo);
     }
 }
 
