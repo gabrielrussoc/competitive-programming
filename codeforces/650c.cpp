@@ -15,7 +15,8 @@ const int inf = INT_MAX;
 const int N = 1000006;
 const int modn = 1000000007;
 
-vector<int> l[N], c[N], adj[N];
+vector<int> l[N], c[N];
+vector<pii> adj[N];
 int n, m, x, gr[N], dist[N], v[N];
 
 int d (int i, int j) { return m*i + j; }
@@ -29,11 +30,12 @@ void topo() {
     while (!s.empty()) {
         int u = s.top();
         s.pop();
-        for (int v : adj[u]) {
+        for (pii a : adj[u]) {
+            int v = a.first;
             gr[v]--;
             if(!gr[v]) {
                 s.push(v);
-                dist[v] = dist[u]+1;
+                dist[v] = dist[u]+a.second;
             }
         }
     }
@@ -58,19 +60,15 @@ int main() {
 
     for(int i = 0; i < n; i++) {
         for(int j = 1; j < m; j++) {
-            if(v[l[i][j-1]] != v[l[i][j]]) {
-                adj[l[i][j-1]].pb(l[i][j]);
-                gr[l[i][j]]++;
-            }
+            adj[l[i][j-1]].pb(pii(l[i][j], v[l[i][j-1]] != v[l[i][j]]));
+            gr[l[i][j]]++;
         }
     }
     
     for(int j = 0; j < m; j++) {
         for(int i = 1; i < n; i++) {
-            if(v[c[j][i-1]] != v[c[j][i]]) {
-                adj[c[j][i-1]].pb(c[j][i]);
-                gr[c[j][i]]++;
-            }
+            adj[c[j][i-1]].pb(pii(c[j][i], v[c[j][i-1]] != v[c[j][i]]));
+            gr[c[j][i]]++;
         }
     }
 
