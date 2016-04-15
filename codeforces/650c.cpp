@@ -16,25 +16,43 @@ const int N = 1000006;
 const int modn = 1000000007;
 
 vector<int> l[N], c[N], adj[N];
-int n, m, x, gr[N], dist[N], v[N];
+int n, m, gr[N], dist[N], v[N], uf[N], wf[N];
 
 int d (int i, int j) { return m*i + j; }
+
+int find (int i) {
+    if(uf[i] == i) return i;
+    return uf[i] = find(uf[i]);
+}
+
+void join (int i, int j) {
+    i = find(i); j = find(j);
+    if(i == j) return;
+    if(wf[i] > wf[j]) swap(i,j);
+    wf[j] += wf[i];
+    uf[i] = j;
+}
 
 void topo() {
     stack<int> s;
     for(int i = 0; i < n; i++)
-        for(int j = 0; j < m; j++)
-            if(!gr[d(i,j)]) s.push(d(i,j)), dist[d(i,j)] = 1;
+        for(int j = 0; j < m; j++) {
+            int idx = d(i,j);
+            if(uf[idx] != idx) continue;
+            idx = find(idx);
+            if(!gr[idx]) { 
+                s.push(idx);
+                dist[idx] = 1;
+            }
+        }
 
     while (!s.empty()) {
         int u = s.top();
         s.pop();
         for (int v : adj[u]) {
             gr[v]--;
-            if(!gr[v]) {
-                s.push(v);
-                dist[v] = dist[u]+1;
-            }
+            if(!gr[v]) s.push(v);
+            dist[v] = max(dist[v], dist[u]+1);
         }
     }
 }
@@ -50,6 +68,8 @@ int main() {
             scanf("%d",&v[idx]);
             l[i].pb(idx);
             c[j].pb(idx);
+            uf[idx] = idx;
+            wf[idx] = 1;
         }
     }
 
@@ -58,25 +78,42 @@ int main() {
 
     for(int i = 0; i < n; i++) {
         for(int j = 1; j < m; j++) {
-            adj[l[i][j-1]].pb(l[i][j]);
-            gr[l[i][j]]++;
+            int a = l[i][j-1], b = l[i][j];
+            if (v[a] == v[b]) join (a,b);
         }
     }
     
     for(int j = 0; j < m; j++) {
         for(int i = 1; i < n; i++) {
-            adj[c[j][i-1]].pb(c[j][i]);
-            gr[c[j][i]]++;
+            int a = c[j][i-1], b = c[j][i];
+            if (v[a] == v[b]) join (a,b);
+        }
+    }
+    
+    for(int i = 0; i < n; i++) {
+        for(int j = 1; j < m; j++) {
+            int a = find(l[i][j-1]), b = find(l[i][j]);
+            if (a == b) continue;
+            adj[a].pb(b);
+            gr[b]++;
+        }
+    }
+    
+    for(int j = 0; j < m; j++) {
+        for(int i = 1; i < n; i++) {
+            int a = find(c[j][i-1]), b = find(c[j][i]);
+            if (a == b) continue;
+            adj[a].pb(b);
+            gr[b]++;
         }
     }
 
     topo();
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++)
-            printf("%d ",dist[d(i,j)]);
+            printf("%d ",dist[find(d(i,j))]);
         printf("\n");
     }
-    
 
 }
 
