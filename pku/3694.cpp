@@ -17,26 +17,30 @@ const int M = 402004;
 const int modn = 1000000007;
 
 int n, m, es, tempo, turn;
-int head[N], to[M], nx[M], bridge;
-int low[N], d[N], vis[N];
+int head[N], to[M], nx[M], brid[M], bridge;
+int low[N], d[N], vis[N], pai[N], lv[N];
 
-void dfs (int u, int p) {
+void dfs (int u, int p, int l) {
+    lv[u] = l;
     vis[u] = turn;
     low[u] = d[u] = tempo++;
+    int k = 0;
     for(int e = head[u]; e; e = nx[e]) {
         int v = to[e];
+        if(v == p) k++;
         if(vis[v] != turn) {
-            dfs(v, u);
+            pai[v] = u;
+            dfs(v, u, l+1);
             low[u] = min(low[u], low[v]);
-            if(low[v] > d[u]) bridge++, printf("%d %d\n",to[e],to[e^1]);
-        } else if (v != p) low[u] = min(low[u], d[v]);
+            if(low[v] > d[u]) brid[e] = brid[e^1] = 1;
+        } else if (k > 1) low[u] = min(low[u], d[v]);
     }
 }
 
 int main() {
     int tc = 1;
     while(scanf("%d %d",&n,&m) && n) {
-        es = 2; tempo = 0;
+        es = 2; tempo = bridge = 0;
         for(int i = 0; i < n; i++) head[i] = 0;
         for(int i = 0; i < m; i++) {
             int u, v;
@@ -45,21 +49,17 @@ int main() {
             to[es] = v; nx[es] = head[u]; head[u] = es++;
             to[es] = u; nx[es] = head[v]; head[v] = es++;
         }
+        dfs(0,-1,0);
         int q;
         scanf("%d",&q);
         printf("Case %d:\n",tc++);
         while(q--) {
-            tempo = 0;
-            turn++;
-            bridge = 0;
             int a,b;
             scanf("%d %d",&a,&b); a--; b--;
-            to[es] = b; nx[es] = head[a]; head[a] = es++;
-            to[es] = a; nx[es] = head[b]; head[b] = es++;
-            dfs(0,-1);
-            printf("%d\n",bridge);
+            if(lv[a] > lv[b]) swap(a,b);
         }
         putchar('\n');
+        turn++;
     }
 }
 
