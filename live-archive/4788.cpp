@@ -15,49 +15,48 @@ const int inf = INT_MAX;
 const int N = 103;
 const int modn = 1000000007;
 
-int n, cost[N], die[N], stay[N], qtd;
+int n, need[N], back[N], tneed[N], tback[N];
 vector<int> adj[N];
 
-bool dfs(int u, int p) {
-    if (qtd < cost[u]) return false;
-    qtd -= die[u] + stay[u];
-    if (qtd < 0) return false;
-    for(int v : adj[u]) 
-        if (v != p) if(!dfs(v,u)) return false;
-    return true;
-}
-
 bool comp (int i, int j) {
-    return cost[i] > cost[j];
+    return tback[i] > tback[j];
 }
 
-bool can (int k) {
-    for(int i = 0; i < n; i++){
-        qtd = k;
-        if (dfs(i,i)) return true;
+int dfs(int u, int p) {
+    tneed[u] = need[u]; tback[u] = back[u];
+    vector<int> filho;
+    for(int v : adj[u]) 
+        if (v != p) {
+            dfs(v, u);
+            filho.pb(v);
+        }
+    sort(filho.begin(), filho.end(), comp);
+    for(int f : filho) {
+        tneed[u] += max(0, tneed[f] - tback[u]);
+        tback[u] -= min(tback[u], tneed[f]);
+        tback[u] += tback[f];
     }
-    return false;
+    return tneed[u];
 }
 
 int main() {
-    int tc = 1;
+    int tc = 1,u, v, a, m, g;
     while(scanf("%d",&n) && n) {
-        for(int i = 0; i < n; i++) 
-            scanf("%d %d %d",cost+i,die+i,stay+i), adj[i].clear();
+        for(int i = 0; i < n; i++) {
+            scanf("%d %d %d",&a,&m,&g);
+            m += g;
+            need[i] = max(a,m);
+            back[i] = need[i] - m;
+            adj[i].clear();
+        }
 
-        int u, v;
         for(int i = 0; i < n-1; i++) {
             scanf("%d %d",&u,&v); u--; v--;
             adj[u].pb(v); adj[v].pb(u);
         }
-        for(int i = 0; i < n; i++) sort(adj[i].begin(), adj[i].end(), comp);
-        int lo = 0, hi = INT_MAX;
-        while (lo < hi) {
-            int mid = lo + (hi-lo)/2;
-            if(can(mid)) hi = mid;
-            else lo = mid+1;
-        }
-        printf("Case %d: %d\n",tc++,lo);
+        int ans = inf;
+        for(int i = 0; i < n; i++) ans = min (ans, dfs(i,i));
+        printf("Case %d: %d\n",tc++, ans);
     }
 }
 
