@@ -15,7 +15,7 @@ const int inf = INT_MAX;
 const int N = 104;
 const int modn = 1000000007;
 
-int n, memo[N][N][1<<15+2], v[17], sum[1<<15+2];
+int n, memo[N][1<<15+2], v[17], sum[1<<15+2];
 
 string bin(int x) {
     string ret;
@@ -34,14 +34,19 @@ void pre(){
     }
 }
 
-int dp (int x, int y, int mask) {
+int dp (int x, int mask) {
     if(__builtin_popcount(mask) == 1) return 1;
-    int &me = memo[x][y][mask];
+    int &me = memo[x][mask];
     if(me != -1) return me;
     me = 0;
-    for(gerasubconjunto) {
-       
+    int y = sum[mask]/x;
+    for(int a = mask & (mask - 1); a; a = mask & (a - 1)) {
+        int b = a^mask;
+        if(b>a) break;
+        if(sum[a]%x == 0) me |= dp(x,a) & dp(y-sum[a]/x,b);
+        if(sum[a]%y == 0) me |= dp(sum[a]/y,a) & dp(x-sum[a]/y,b);
     }
+    return me;
 }
 
 int main() {
@@ -56,7 +61,7 @@ int main() {
         }
         pre();
         memset(memo,-1,sizeof memo);
-        printf("Case %d: %s\n",tc++,dp(x,y,(1<<n) - 1) ? "Yes" : "No" );
+        printf("Case %d: %s\n",tc++,dp(x,(1<<n) - 1) ? "Yes" : "No" );
     }
 }
 
