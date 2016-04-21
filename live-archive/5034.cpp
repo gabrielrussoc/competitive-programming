@@ -18,53 +18,47 @@ const int modn = 1000000007;
 int lc[N], rc[N], x[N], y[N], sz[N];
 int ts, tam;
 vector<int> in;
+vector<int> tree[4*N];
 
-struct node {
-    vector<int> v;
-    node operator + (node a) const {
-        node ret;
-        int i, j, n, m;
-        i = j = 0;
-        n = v.size();
-        m = a.v.size();
-        while(i+j < n+m) {
-            if(i == n) ret.v.pb(a.v[j++]);
-            else if(j == m) ret.v.pb(v[i++]);
-            else if (v[i] < a.v[j]) ret.v.pb(v[i++]);
-            else ret.v.pb(a.v[j++]);
-        }
-        return ret;
-    }
-    node () {}
-    node (int x) {
-        v.pb(x);
-    }
-} tree[4*N];
+struct triple {
+    int f,s,t;
+    triple () {}
+    triple (int a, int b, int c) : f(a) , s(b) , t(c) {}
+};
 
-void build(int k, int i, int j, int idx) {
-    if(i == j) {
-        tree[k] = node(in[idx]);
+void build(int k = 1, int l = 0, int r = tam-1) {
+    tree[k].clear();
+    if(l == r) {
+        tree[k].pb(in[l]);
         return;
     }
-    int mid = (i+j)/2;
-    if(idx <= mid) build(2*k,i,mid,idx);
-    else build(2*k+1,mid+1,j,idx);
-    tree[k] = tree[2*k] + tree[2*k+1];
-}
-
-node query(int k, int l, int r, int fl, int fr) {
-    if(l >= fl && r <= fr) return tree[k];
-    if(l > fr || r < fl) return node();
     int mid = (l+r)/2;
-    return query(2*k,l,mid,fl,fr) + query(2*k+1,mid+1,r,fl,fr);
+    build(2*k,l,mid);
+    build(2*k+1,mid+1,r);
+    merge(tree[2*k].begin(), tree[2*k].end(), tree[2*k+1].begin(), tree[2*k+1].end(), back_inserter(tree[k]));
 }
 
-int qry1(int s, int t, int k) {
+int query(int fl, int fr, int num, int k=1, int l=0, int r=tam-1) {
+    if(l > fr || r < fl) return 0;
+    if(l >= fl && r <= fr)
+        return lower_bound(tree[k].begin(), tree[k].end(), num) - tree[k].begin();
+    int mid = (l+r)/2;
+    return query(fl,fr,num,2*k,l,mid) + query(fl,fr,num,2*k+1,mid+1,r);
+}
+
+ll qry1(int s, int t, int k) {
     s--; t--;
-    return query(1,0,tam-1,s,t).v[k-1];
+    ll lo = 0, hi = inf;
+    while(lo < hi) {
+        ll mid = (lo+hi+1)/2;
+        if(query(s,t,mid) < k) lo = mid;
+        else hi = mid-1;
+    }
+    return lo;
 }
 
 void upd(int t) {
+    if(t == -1) return;
     sz[t] = 1;
     if(lc[t] != -1) sz[t] += sz[lc[t]];
     if(rc[t] != -1) sz[t] += sz[rc[t]];
@@ -93,7 +87,7 @@ void insert (int &t, int k) {
     merge(t,t,r);
 }
 
-int qry2 (int t, int k) {
+ll qry2 (int t, int k) {
     int l, r, ret;
     split(k, t, l, r);
     ret = sz[l];
@@ -101,7 +95,7 @@ int qry2 (int t, int k) {
     return ret;
 }
 
-int qry3 (int t, int k) {
+ll qry3 (int t, int k) {
     int qe = lc[t] != -1 ? sz[lc[t]] : 0;
     if(qe + 1 == k) return x[t];
     else if (qe+1 > k) return qry3(lc[t], k);
@@ -120,8 +114,8 @@ int main() {
         in.clear();
         ts = 0;
         treap = -1;
-        vector<tuple<int, int, int> > qq;
-        int q1,q2,q3;
+        vector<triple> qq;
+        ll q1,q2,q3;
         q1 = q2 = q3 = 0;
         for(int i = 0; i < n; i++) {
             scanf(" %s",buf);
@@ -133,7 +127,7 @@ int main() {
                 int qr = buf[6]-'0';
                 if(qr == 1) {
                     scanf("%d %d %d",&s,&t,&k);
-                    qq.pb(tie(s,t,k));
+                    qq.pb(triple(s,t,k));
                 }
                 else if(qr == 2) {
                     scanf("%d",&x);
@@ -145,10 +139,10 @@ int main() {
             }
         }
         tam = in.size();
-        for(int i = 0; i < tam; i++) build(1,0,tam-1,i);
-        for(auto q : qq)
-            q1 += qry1(get<0>(q), get<1>(q), get<2>(q));
-        printf("Case %d:\n%d\n%d\n%d\n",tc++,q1,q2,q3);
+        build();
+        for(int i = 0; i < qq.size(); i++)
+            q1 += qry1(qq[i].f, qq[i].s, qq[i].t);
+        printf("Case %d:\n%lld\n%lld\n%lld\n",tc++,q1,q2,q3);
     }
 }
 
