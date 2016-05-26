@@ -14,15 +14,21 @@ const int inf = INT_MAX;
 //////////////0123456789
 const int N = 10004;
 const int modn = 1000000007;
+int n, t;
+int ans = 0;
+double qt[15][15];
 
 int main() {
-    int n, t;
-    int ans = 0;
     scanf("%d %d",&n, &t);
+    qt[0][0] = t;
     for(int i = 0; i < n; i++) {
-        for(int j = 0; j <= i; j++){
-            if(!j || j == i) ans += (t >= ((1<<(i+1))-1));
-            else ans += (t >= ((1<<i)-1) + (1<<(i-1)));
+        for(int j = 0; j <= i; j++) {
+            if(qt[i][j] > 1-eps) {
+                double l = qt[i][j]-1;
+                l *= .5;
+                ans++;
+                qt[i+1][j] += l; qt[i+1][j+1] += l;
+            }
         }
     }
     printf("%d\n",ans);

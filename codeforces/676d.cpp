@@ -30,13 +30,13 @@ pii st, end;
 int get_door(char c) {
     int ret = 0;
     if(c == '+' || c == '|' || c == '^' || c == 'L' || c == 'R' || c == 'D')
-        ret |= (1<<3);
-    if(c == '+' || c == '|' || c == 'v' || c == 'L' || c == 'R' || c == 'U')
-        ret |= (1<<1);
-    if(c == '+' || c == '-' || c == '<' || c == 'R' || c == 'U' || c == 'D')
-        ret |= (1<<0);
+        ret |= (1<<3); //top
     if(c == '+' || c == '-' || c == '>' || c == 'L' || c == 'U' || c == 'D')
-        ret |= (1<<2);
+        ret |= (1<<2); //right
+    if(c == '+' || c == '|' || c == 'v' || c == 'L' || c == 'R' || c == 'U')
+        ret |= (1<<1); //down
+    if(c == '+' || c == '-' || c == '<' || c == 'R' || c == 'U' || c == 'D')
+        ret |= (1<<0); //left
     return ret;
 }
 
@@ -125,7 +125,6 @@ int main() {
                 int u = uni(i,j,p);
                 int v = uni(i,j,(p+1)%4);
                 adj[u].pb(v);
-                adj[v].pb(u);
             }
             for(int k = 0; k < 4; k++){ //neighbours
                 if(!isval(i+dx[k], j+dy[k])) continue;
@@ -134,7 +133,6 @@ int main() {
                         int u = uni(i,j,l);
                         int v = uni(i+dx[k], j + dy[k], l);
                         adj[u].pb(v);
-                        adj[v].pb(u);
                     }
                 }
             }
