@@ -16,7 +16,7 @@ const int N = 100004;
 const int modn = 1000000007;
 
 ll a[N];
-multiset<ll> s;
+map<ll,int> m;
 int n;
 
 int main() {
@@ -26,12 +26,12 @@ int main() {
     for(int i = 0; i < n; i++) {
         cin >> a[i];
         acc += a[i];
-        s.insert(acc);
+        m[acc]++;
     }
-    int ans = n-(int)s.count(0);
+    int ans = n-m[0];
     for(int i = 0; i < n; i++) {
         sum += a[i];
-        ans = min(ans, n - (int) s.count(a[i]));
+        ans = min(ans, n - m[sum]);
     }
     cout << ans << endl;
 }
