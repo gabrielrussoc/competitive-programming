@@ -4,6 +4,7 @@ import java.util.*;
 public class ProblemaBolado {
 
     public void solve() {
+        /* CODA AQUI E NAO MEXE LA PRA BAIXO */
         /* Nao esquece de mudar o nome da classe (na main la embaixo tambem) */
         /* Leitura in.nextTipo() */
         /* String é só in.next(). Se quiser num array de char, in.next().toCharArray() */
