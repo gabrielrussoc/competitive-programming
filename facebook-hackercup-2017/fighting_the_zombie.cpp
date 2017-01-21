@@ -5,7 +5,7 @@ typedef long long ll;
 
 const int X = 22;
 const int Y = 22;
-const int H = 11234;
+const int H = 21234;
 
 char spell[169];
 double memo[X][H][Y];
